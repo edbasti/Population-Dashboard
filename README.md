@@ -1,4 +1,5 @@
 # Population-Dashboard
 React Population Dashboard
 
-Do npm install for the dependencies, then npm start to run the web app! Enjoy!
+1. In the project source directory, open a terminal and run npm install for the dependencies
+2. Run then npm start to run the web app! Enjoy!
