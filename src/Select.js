@@ -14,15 +14,27 @@ const MainContainer = styled.div`
 `;
 
 const StyledDiv = styled.div`
-  margin-top: 100px;
+  margin-top: 200px;
 `;
 
 const SelectDiv = styled.div`
   float: left;
   font-weight: bold;
   margin-right: 60px;
+  bottom: 10px;
 `;
 
+const StyledLabel = styled.label`
+  font-weight: 100;
+`
+
+const StyledSubheader = styled.label`
+  font-style: italic;
+  font-weight: 400;
+  display: block;
+  font-size: 20px;
+  margin-bottom: 60px;
+`
 class Select extends React.Component {
   constructor(props) {
     super(props);
@@ -48,20 +60,7 @@ class Select extends React.Component {
 
   }
   
-  initCountry(cntry) {
-    this.setState({ country: cntry }, () => {
-      localStorage.setItem('country', JSON.stringify(this.state.country))
-    });
-
-    this.setState({ provinces: this.countries.filter(item => item.id === cntry) }, () => {
-      localStorage.setItem('provinces', JSON.stringify(this.state.provinces))
-    });
-    const currentProvince = this.countries.filter(item => item.id === cntry);
-    this.setState({ cities: currentProvince[0].provinces[0].cities }, () => {
-      localStorage.setItem('cities', JSON.stringify(this.state.cities))
-    });
-  }
-  countries = mockData;
+    countries = mockData;
 
   handleCountry(event) {
     this.setState({ country: event.target.value }, () => {
@@ -116,16 +115,15 @@ class Select extends React.Component {
       const cities = this.state.cities;
       arrCities = cities[0].cities;
     }
-    
     return (
       <MainContainer>
         <SimpleStorage parent={this} />
         <form onSubmit={this.handleSubmit}>
           <h1>Engie World Population Report</h1>
-          <h4>Prepared by: Edwardson S. Sebastian</h4>
+          <StyledSubheader>Prepared by: Edwardson S. Sebastian</StyledSubheader>
           <SelectDiv>
-            <label>
-              Pick your country:<br />
+            <StyledLabel>
+              Pick your country:<br /><br />
               <select onChange={this.handleCountry} style={{ width: 150}}>
                 <option value="">-- Please Choose --</option>
                 { 
@@ -133,31 +131,31 @@ class Select extends React.Component {
                   <option key={item.id} value={item.id} selected={this.state.country === item.id ? 'selected' : ''}>{item.label}</option>)
                 }
               </select>
-            </label>
+            </StyledLabel>
           </SelectDiv>
           <SelectDiv>
-            <label>
-              Pick your state:<br />
+            <StyledLabel>
+              Pick your state:<br /><br />
               <select onChange={this.handleProvince} style={{ width: 150}}>
               {arrProvinces && arrProvinces.map((item) =>
                 <option key={item.id} value={item.id} selected={this.state.currentProvince === item.id ? 'selected' : ''}>{item.label}</option>)
               }
               </select>
-            </label>
+            </StyledLabel>
           </SelectDiv>
           <SelectDiv>
-            <label>
-              Pick your city:<br />
+            <StyledLabel>
+              Pick your city:<br /><br />
               <select onChange={this.handleCity} style={{ width: 150}}>
                 {this.state.country && 
                   <option value="">-- Please Choose --</option>
                 }
                 {
                   arrCities && arrCities.map((item) =>
-                  <option key={item.id} value={item.id} selected={this.state.currentCity === item.id ? 'selected' : ''}>{item.label}</option>)
+                  <option key={item.id} value={item.id} selected={this.state.currentCity[0].id === item.id ? 'selected' : ''}>{item.label}</option>)
                 }
               </select>
-            </label>
+            </StyledLabel>
           </SelectDiv>
         </form>
         {this.state.currentProvince &&
