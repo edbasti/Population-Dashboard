@@ -53,7 +53,8 @@ class Select extends React.Component {
       current: JSON.parse(localStorage.getItem('current')) ?
         JSON.parse(localStorage.getItem('current')) : null,
     };
-
+    console.log(this.state.currentProvince);
+    console.log(this.state.currentCity);
     this.handleCountry = this.handleCountry.bind(this);
     this.handleProvince = this.handleProvince.bind(this);
     this.handleCity = this.handleCity.bind(this);
@@ -152,7 +153,7 @@ class Select extends React.Component {
                 }
                 {
                   arrCities && arrCities.map((item) =>
-                  <option key={item.id} value={item.id} selected={this.state.currentCity[0].id === item.id ? 'selected' : ''}>{item.label}</option>)
+                  <option key={item.id} value={item.id}>{item.label}</option>)
                 }
               </select>
             </StyledLabel>

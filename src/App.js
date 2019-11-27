@@ -6,9 +6,9 @@ import Select from './Select'
 class App extends Component {
   render() {
     return (
-      <>
+      <div>
         <Select />
-      </>
+      </div>
     )
   }
 }
