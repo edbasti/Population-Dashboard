@@ -46,15 +46,13 @@ class Select extends React.Component {
         JSON.parse(localStorage.getItem('provinces')) : null,
       cities: JSON.parse(localStorage.getItem('cities')) ?
         JSON.parse(localStorage.getItem('cities')) : null,
-      currentCity: JSON.parse(localStorage.getItem('currentCity')) ?
-        JSON.parse(localStorage.getItem('currentCity')) : null,
       currentProvince: JSON.parse(localStorage.getItem('currentProvince')) ?
         JSON.parse(localStorage.getItem('currentProvince')) : null,
+      currentCity: JSON.parse(localStorage.getItem('currentCity')) ?
+        JSON.parse(localStorage.getItem('currentCity')) : null,
       current: JSON.parse(localStorage.getItem('current')) ?
         JSON.parse(localStorage.getItem('current')) : null,
     };
-    console.log(this.state.currentProvince);
-    console.log(this.state.currentCity);
     this.handleCountry = this.handleCountry.bind(this);
     this.handleProvince = this.handleProvince.bind(this);
     this.handleCity = this.handleCity.bind(this);
@@ -72,6 +70,7 @@ class Select extends React.Component {
       localStorage.setItem('provinces', JSON.stringify(this.state.provinces))
     });
     const currentProvince = this.countries.filter(item => item.id === event.target.value);
+    console.log(currentProvince[0].provinces[0].cities);
     this.setState({ cities: currentProvince[0].provinces[0].cities }, () => {
       localStorage.setItem('cities', JSON.stringify(this.state.cities))
     });
@@ -106,15 +105,19 @@ class Select extends React.Component {
   render() {
     let arrProvinces = [];
     let arrCities = [];
-
+    
     if(this.state.provinces) {
       const provinces = this.state.provinces;
-      arrProvinces = provinces[0].provinces;
+        if(typeof provinces[0] !== 'undefined') {
+          arrProvinces = provinces[0].provinces;
+        }
     }
-
+    
     if(this.state.cities) {
       const cities = this.state.cities;
-      arrCities = cities[0].cities;
+      if(typeof cities[0] !== 'undefined') {
+        arrCities = cities[0].cities;
+      }
     }
     return (
       <MainContainer>
@@ -125,11 +128,11 @@ class Select extends React.Component {
           <SelectDiv>
             <StyledLabel>
               Pick your country:<br /><br />
-              <select onChange={this.handleCountry} style={{ width: 150}}>
-                <option value="">-- Please Choose --</option>
+              <select onChange={this.handleCountry} style={{ width: 150}} defaultValue={this.state.country || ''}>
+                <option value="" disabled>-- Please Choose --</option>
                 { 
                   this.countries.map((item) => 
-                  <option key={item.id} value={item.id} selected={this.state.country === item.id ? 'selected' : ''}>{item.label}</option>)
+                  <option key={item.id} value={item.id} >{item.label}</option>)
                 }
               </select>
             </StyledLabel>
@@ -137,9 +140,9 @@ class Select extends React.Component {
           <SelectDiv>
             <StyledLabel>
               Pick your state:<br /><br />
-              <select onChange={this.handleProvince} style={{ width: 150}}>
+              <select onChange={this.handleProvince} style={{ width: 150}} defaultValue={this.state.currentProvince[0].id || ''}>
               {arrProvinces && arrProvinces.map((item) =>
-                <option key={item.id} value={item.id} selected={this.state.currentProvince === item.id ? 'selected' : ''}>{item.label}</option>)
+                <option key={item.id} value={item.id} >{item.label}</option>)
               }
               </select>
             </StyledLabel>
@@ -147,13 +150,13 @@ class Select extends React.Component {
           <SelectDiv>
             <StyledLabel>
               Pick your city:<br /><br />
-              <select onChange={this.handleCity} style={{ width: 150}}>
+              <select onChange={this.handleCity} style={{ width: 150}} defaultValue={this.state.currentCity[0].id || ''}>
                 {this.state.country && 
-                  <option value="">-- Please Choose --</option>
+                  <option value="" disabled>-- Please Choose --</option>
                 }
                 {
                   arrCities && arrCities.map((item) =>
-                  <option key={item.id} value={item.id}>{item.label}</option>)
+                  <option key={item.id} value={item.id} >{item.label}</option>)
                 }
               </select>
             </StyledLabel>
